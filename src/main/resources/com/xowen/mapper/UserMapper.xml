@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--MyBatis的DTD约束-->
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xowen.mapper.UserMapper">
+    <sql id="commonSelect">select * from user_admin</sql>
+
+    <select id="selectUserByXml" resultType="com.xowen.pojo.EnglishUser">
+        <include refid="commonSelect"/>
+        <where>
+            <if test="role != null">
+                role like concat('%',#{role},'%')
+            </if>
+            <if test="authrioty != null">
+                and authrioty = #{authrioty}
+            </if>
+            <if test="begin != null and end != null">
+                and create_time between #{begin} and #{end}
+            </if>
+        </where>
+        order by create_time desc
+    </select>
+
+    <delete id="deleteUserByIdsWithXml">
+        delete from user_admin where id in
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

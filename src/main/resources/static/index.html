@@ -1,0 +1,34 @@
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<!-- 引入样式 -->
+<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+<!-- 引入组件库 -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<div id="app">{{ tableData }}</div>
+
+
+
+
+<script>
+
+    const { createApp } = Vue
+
+    createApp({
+        data() {
+            return {
+                message: 'Hello Vue!',
+                tableData: []
+            }
+        },
+        mounted(){
+            console.log("hello")
+            axios.post('/get_info').then(res => {
+                if(res.data.code){
+                    this.tableData = res.data.data;
+                }else {
+                    this.tableData = [];
+                }
+            })
+        }
+    }).mount('#app')
+</script>
